@@ -1,1 +1,1 @@
-
+DISCORD_TOKEN=tu_token_de_discord_aquí
