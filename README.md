@@ -2,9 +2,9 @@
 
 **Un bot de Discord enfocado en enlazar conocimiento colaborativo desde Wikipedia, con el estilo de la comunidad HormigasAIS.**
 
-![License](https://img.shields.io/badge/license-MIT-blue.svg)  
-![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)  
-[Join Discord](https://discord.gg/kGawzTDk)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
+[![Join Discord](https://img.shields.io/discord/1337650030282145794?label=HormigasAIS&logo=discord)](https://discord.gg/kGawzTDk)
 
 ---
 
@@ -21,7 +21,7 @@ Este bot nace como parte de una iniciativa educativa y de innovación tecnológi
 - **Comandos personalizados** para compartir desafíos y recursos educativos.
 - **Búsqueda inteligente de artículos de Wikipedia.**
 - **Mensajes automáticos** con estilo visual y control de menciones.
-- **Integración pensada para crecer con GitHub, Slack y otras plataformas.
+- **Integración pensada para crecer con GitHub, Slack y otras plataformas.**
 
 ---
 
@@ -31,7 +31,6 @@ Este bot nace como parte de una iniciativa educativa y de innovación tecnológi
 git clone https://github.com/HormigasAIS/HormigasAIS-WikiBot.git
 cd HormigasAIS-WikiBot
 pip install -r requirements.txt
-
 ---
 
 ## Comandos 
