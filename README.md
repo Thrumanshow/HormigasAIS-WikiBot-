@@ -37,4 +37,4 @@ HormigasAIS-WikiBot es un bot desarrollado en Python para Discord, diseñado par
 1. Clona el repositorio:  
    ```bash
    git clone https://github.com/Thrumanshow/HormigasAIS-WikiBot.git
-   cd HormigasAIS-WikiBot
+   cd HormigasAIS-WikiBot(https://github.com/Thrumanshow/HormigasAIS-WikiBot-)
