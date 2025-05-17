@@ -4,7 +4,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)  
 ![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)  
-[![Join Discord](https://img.shields.io/discord/1337650030282145794?label=HormigasAIS&logo=discord)](https://discord.gg/tu-invitacion)
+[![Join Discord](https://discord.gg/kGawzTDk)
 
 ---
 
