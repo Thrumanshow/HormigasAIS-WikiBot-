@@ -1,2 +1,3 @@
 # HormigasAIS-WikiBot-
-bot.py
+discord.py
+requests
