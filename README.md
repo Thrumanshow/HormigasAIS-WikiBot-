@@ -4,7 +4,7 @@
 
 ![License](https://img.shields.io/badge/license-MIT-blue.svg)  
 ![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)  
-[![Join Discord](https://discord.gg/kGawzTDk)
+[Join Discord](https://discord.gg/kGawzTDk)
 
 ---
 
