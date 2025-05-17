@@ -1,4 +1,4 @@
-# HormigasAIS-WikiBot 
+o# HormigasAIS-WikiBot 
 
 **Autor:** Thrumanshow (Cristhiam Quiñonez)  
 **Tecnologías:** Python, discord.py, requests  
@@ -45,3 +45,25 @@ HormigasAIS-WikiBot es un bot desarrollado en Python para Discord, diseñado par
 
 - `!wiki Python`: Busca el resumen de Wikipedia para "Python".
 - `!ayuda`: Muestra los comandos disponibles.
+
+
+--- 
+
+### Sobre el fundador 
+
+**Chris Quiñonez**, también conocido como **Quiñonez**, es el fundador de [HormigasAIS](https://en.wikipedia.org/wiki/User:HormigasaiS.A), una iniciativa que combina **inteligencia artificial, marketing digital y automatización** para ayudar a personas y organizaciones a adaptarse al presente tecnológico. 
+
+Es diseñador gráfico de formación, autodidacta en desarrollo web, análisis de datos y SEO. Creador de herramientas educativas y contenido en español para fomentar el uso responsable y accesible de la tecnología. 
+
+Actualmente desarrolla proyectos como: 
+
+- [HormigasAIS Open Lab (GitHub)](https://github.com/HormigasAIS)
+- [HormigasAIS Community (Newsletter)](https://www.linkedin.com/newsletters/hormigasais-community-7307138608543490048)
+- TheAntsMind (repositorio de ideas, herramientas y visualizaciones)
+- Personaje IA: **XOXO**, un asistente digital simbólico para la comunidad. 
+
+También está activo en plataformas como **Discord**, **GitHub**, **Slack**, y participa como observador y colaborador en espacios de conocimiento abierto como Wikipedia. 
+
+> "Creando puentes entre la inteligencia artificial y las necesidades humanas reales." 
+
+---
