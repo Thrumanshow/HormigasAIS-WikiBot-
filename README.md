@@ -84,6 +84,6 @@ Puedes:
 
 ---
 
-##Licencia 
+## 📜 Licencia 
 
-Este proyecto está bajo la Licencia [MIT](https://opensource.org/licenses/MIT).
+Este proyecto está licenciado bajo [Creative Commons Attribution-ShareAlike 4.0](https://github.com/Thrumanshow/semilla-de-cierre-/blob/main/MIT%20License%20).
