@@ -1,24 +1,51 @@
-# Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)
+# HormigasAIS-WikiBot License
 
-Copyright (c) 2025 Cristhiam Quiñonez
+## 1. Propósito
+HormigasAIS-WikiBot es un bot de Discord centrado en la automatización, gestión de contenidos y supervisión persistente en nuestro ecosistema digital.  
+Este software requiere una licencia válida y un token de acceso para su funcionamiento completo.
 
-Este trabajo está bajo la Licencia **Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)**.
+## 2. Licencia y Token
+Para activar el bot, debes poseer un **LICENSE_TOKEN** válido, que se valida mediante `token_manager.py`.  
+El token asegura que solo usuarios autorizados puedan usar el software y sus funcionalidades avanzadas.
 
-## Usted es libre de:
-- **Compartir** — copiar y redistribuir el material en cualquier medio o formato.
-- **Adaptar** — remezclar, transformar y construir a partir del material para cualquier propósito, incluso comercialmente.
+### Configuración del token:
+En tu archivo `.env`:
 
-## Bajo los siguientes términos:
-- **Atribución** — Debe dar crédito adecuado, proporcionar un enlace a la licencia e indicar si se han realizado cambios. Puede hacerlo de cualquier manera razonable, pero no de forma que sugiera que tiene el apoyo del licenciante o lo recibe por el uso que hace del material.
-- **CompartirIgual** — Si remezcla, transforma o crea a partir del material, debe distribuir su contribución bajo la misma licencia que el original.
 
-## No hay restricciones adicionales:
-No puede aplicar términos legales o medidas tecnológicas que restrinjan legalmente a otros de hacer cualquier cosa que la licencia permita.
+### token_manager.py leerá este archivo y habilitará las funciones correspondientes según el nivel de licencia. 
 
----
+3. Escalonamiento de licencias 
 
-### Aviso completo de la licencia
-Para ver una copia de esta licencia, visite:  
-[https://creativecommons.org/licenses/by-sa/4.0/](https://creativecommons.org/licenses/by-sa/4.0/)
+• Nivel 1 – Básico (gratuito): Acceso limitado a funciones de consulta y supervisión mínima. 
 
-O envíe una carta a: Creative Commons, PO Box 1866, Mountain View, CA 94042, USA.
+• Nivel 2 – PYME: Acceso completo a barrera.js y logs de actividad; permite integración con Slack y GitHub. 
+
+• Nivel 3 – Empresa/Organización: Funcionalidades avanzadas, integraciones extendidas y prioridad en soporte técnico. 
+
+• Nivel 4 – Cooperativa: Acceso completo a todos los módulos internos y posibilidad de personalización del bot bajo acuerdo. 
+
+Cada token define el nivel de acceso automáticamente, gestionado por token_manager.py. 
+
+4. Restricciones 
+
+• El código fuente es público, pero el uso comercial está limitado a los niveles de licencia adquiridos. 
+
+• Redistribución o venta sin licencia está prohibida. 
+
+• Cualquier intento de manipulación del token o bypass será considerado violación de los términos de uso. 
+
+5. Soporte y contacto 
+
+Para consultas sobre licencias, soporte o información, contacta con el equipo de HormigasAIS:
+Email: soporte@hormigasais.com
+Canales oficiales de la comunidad: Discord, Slack. 
+
+6. Términos legales 
+
+• HormigasAIS S.A. mantiene todos los derechos de propiedad intelectual sobre HormigasAIS-WikiBot. 
+
+• El usuario acepta que el software se utiliza bajo su propio riesgo y que HormigasAIS S.A. no se hace responsable por daños derivados del uso.
+
+```bash
+export LICENSE_TOKEN=tu_token_aqui
+export CLIENT_TYPE=PYME  # O el tipo de cliente: Empresa, Organización, Cooperativa
