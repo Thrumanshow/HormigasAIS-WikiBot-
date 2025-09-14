@@ -29,4 +29,4 @@ Todos los colaboradores aceptan que sus contribuciones se integran bajo los tér
 Para contribuir, consulta el archivo CONTRIBUTING.md y sigue las pautas de la comunidad HormigasAIS.
 
 ---
-,
+
