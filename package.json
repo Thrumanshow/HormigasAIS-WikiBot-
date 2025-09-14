@@ -1,0 +1,2 @@
+cd ~/Thrumanshow/HormigasAIS-WikiBot
+npm install @slack/web-api node-fetch dotenv
