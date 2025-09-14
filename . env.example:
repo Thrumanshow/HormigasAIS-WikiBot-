@@ -1,3 +1,10 @@
-DISCORD_TOKEN=tu_token_aquí
-PREFIX=!
-WIKIPEDIA_API_URL=https://es.wikipedia.org/api/rest_v1/page/summary/
+# Archivo de configuración de HormigasAIS-WikiBot
+
+# Webhook de Slack (opcional si usas Bot Token)
+SLACK_WEBHOOK_URL=https://hooks.slack.com/services/T00000000/B00000000/XXXXXXXXXXXXXXXXXXXXXXXX
+
+# Bot Token de Slack (opcional si usas Webhook)
+SLACK_BOT_TOKEN=YOUR_SLACK_BOT_TOKEN_HERE
+
+# Canal de Slack donde se enviarán notificaciones
+SLACK_CHANNEL=#general
