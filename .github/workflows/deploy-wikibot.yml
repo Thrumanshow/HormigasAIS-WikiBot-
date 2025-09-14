@@ -12,7 +12,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v4
 
-      # 2️⃣ Configurar Node.js (para barrera.js)
+      # 2️⃣ Configurar Node.js
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -21,7 +21,7 @@ jobs:
       - name: Install Node.js dependencies
         run: npm install
 
-      # 3️⃣ Configurar Python (para bot.py)
+      # 3️⃣ Configurar Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -30,7 +30,7 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
 
-      # 4️⃣ Registrar la ejecución del workflow localmente
+      # 4️⃣ Registrar la ejecución del workflow
       - name: Log execution details
         run: |
           LOG_FILE="workflow_log_$(date +'%Y%m%d_%H%M%S').txt"
@@ -46,55 +46,46 @@ jobs:
           name: bot_execution_log
           path: ${{ github.workspace }}/$LOG_FILE
 
-      # 6️⃣ Push del log al repo privado y actualizar summary.txt
-      - name: Push log to private repo and update summary
+      # 6️⃣ Push del log al repo privado HormigasAIS-Bot-Logs
+      - name: Push log to private repo
         env:
           HORMIGAS_TOKEN: ${{ secrets.HORMIGAS_GITHUB_TOKEN }}
-          LOG_RETENTION_DAYS: 30
         run: |
           git config --global user.name "Thrumanshow"
           git config --global user.email "chrisquionez@example.com"
-
           git clone https://x-access-token:$HORMIGAS_TOKEN@github.com/Thrumanshow/HormigasAIS-Bot-Logs.git temp_logs_repo
-          mkdir -p temp_logs_repo/logs
-          mkdir -p temp_logs_repo/archive
-
-          # Archivar logs antiguos
-          find temp_logs_repo/logs/ -maxdepth 1 -name "*.txt" -mtime +$LOG_RETENTION_DAYS -exec mv {} temp_logs_repo/archive/ \;
-
-          # Copiar el log actual
           cp $LOG_FILE temp_logs_repo/logs/
-
-          # Crear o actualizar summary.txt con logs de los últimos 30 días
-          echo "Workflow Execution Summary (Last $LOG_RETENTION_DAYS days)" > temp_logs_repo/summary.txt
-          for FILE in $(ls -1t temp_logs_repo/logs/*.txt); do
-              USER_LINE=$(grep "User:" $FILE | cut -d ":" -f2- | xargs)
-              DATE_LINE=$(grep "Date:" $FILE | cut -d ":" -f2- | xargs)
-              STATUS_LINE=$(grep "Workflow status:" $FILE | cut -d ":" -f2- | xargs || echo "Unknown")
-              NODE_STATUS=$(grep "Node.js bot status:" $FILE | cut -d ":" -f2- | xargs || echo "Pending")
-              PY_STATUS=$(grep "Python bot status:" $FILE | cut -d ":" -f2- | xargs || echo "Pending")
-              echo "$(basename $FILE) | User: $USER_LINE | Date: $DATE_LINE | Workflow: $STATUS_LINE | Node.js bot: $NODE_STATUS | Python bot: $PY_STATUS" >> temp_logs_repo/summary.txt
-          done
-
           cd temp_logs_repo
-          git add logs/ summary.txt
-          git commit -m "Add workflow log $LOG_FILE, archive old logs, and update summary" || true
+          git add logs/$LOG_FILE
+          git commit -m "Add workflow log $LOG_FILE" || true
           git push origin main
           cd ..
           rm -rf temp_logs_repo
 
-      # 7️⃣ Ejecutar Node.js bot y capturar estado
+      # 7️⃣ Validar token antes de ejecutar los bots
+      - name: Validate License Token
+        run: |
+          python token_manager.py
+        env:
+          LICENSE_TOKEN: ${{ secrets.LICENSE_TOKEN }}
+          CLIENT_TYPE: "PYMES"  # Ajusta según el tipo de cliente
+
+      # 8️⃣ Ejecutar Node.js bot solo si token válido
       - name: Run Node.js bot
+        if: success()
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         run: |
           echo "Launching Node.js bot..."
-          node barrera.js && echo "Node.js bot status: Success" >> $LOG_FILE || echo "Node.js bot status: Failed" >> $LOG_FILE
+          node barrera.js
 
-      # 8️⃣ Ejecutar Python bot y capturar estado
+      # 9️⃣ Ejecutar Python bot solo si token válido
       - name: Run Python bot
+        if: success()
         env:
           DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
         run: |
+          echo "Launching Python bot..."
+          python bot.py        run: |
           echo "Launching Python bot..."
           python bot.py && echo "Python bot status: Success" >> $LOG_FILE || echo "Python bot status: Failed" >> $LOG_FILE
