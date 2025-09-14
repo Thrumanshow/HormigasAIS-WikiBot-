@@ -11,8 +11,20 @@
 
 --- 
 
-## Licencia
-[![License: CC BY-SA 4.0](https://img.shields.io/badge/License-CC%20BY--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-sa/4.0/)  
-Este proyecto está licenciado bajo los términos de la **Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)** © 2025 Cristhiam Quiñonez 
+### Licencia y Acceso
+
+HormigasAIS-WikiBot requiere una **licencia válida** y un **token de acceso** para funcionar correctamente.  
+El archivo **`LICENSE.md`** explica los niveles de licenciamiento, mientras que **`token_manager.py`** valida automáticamente tu token y habilita funciones según tu nivel:
+
+- **Nivel Básico (gratuito)**: Funciones limitadas de consulta y supervisión.  
+- **PYME**: Acceso completo a `barrera.js`, logs y algunas integraciones.  
+- **Empresa / Organización**: Funcionalidades avanzadas y soporte prioritario.  
+- **Cooperativa**: Acceso total y personalización del bot bajo acuerdo.
+
+Para activar tu licencia, configura tu archivo `.env`:
+
+```bash
+export LICENSE_TOKEN=tu_token_aqui
+export CLIENT_TYPE=PYME  # O el tipo de cliente que corresponda Cristhiam Quiñonez 
 
 ---
