@@ -1,122 +1,65 @@
-#!/bin/bash
-# setup.sh – Script de inicialización para HormigasAIS-WikiBot en Termux
+#!/data/data/com.termux/files/usr/bin/bash
+# setup_wikibot.sh – Script persistente para HormigasAIS-WikiBot en Termux
 
-set -e  # Detener ejecución si hay errores
+echo "🔒 Activando wake lock para que Termux no se detenga..."
+termux-wake-lock
 
-# === 1. Ir al directorio del proyecto ===
-echo "📂 Entrando al repositorio HormigasAIS-WikiBot..."
-cd ~/Thrumanshow/HormigasAIS-WikiBot
+echo "🔄 Actualizando Termux..."
+pkg update -y && pkg upgrade -y
 
-# === 2. Inicializar NodeJS si no existe package.json ===
-if [ ! -f package.json ]; then
-  echo "⚡ Creando package.json..."
-  npm init -y
+# Instalar Node.js LTS si no está presente
+if ! command -v node &> /dev/null
+then
+    echo "📦 Node.js LTS no encontrado. Instalando..."
+    pkg install nodejs-lts -y
 fi
 
-# === 3. Instalar dependencias necesarias ===
-echo "📦 Instalando dependencias..."
+# Instalar git si no está presente
+if ! command -v git &> /dev/null
+then
+    echo "📦 Git no encontrado. Instalando..."
+    pkg install git -y
+fi
+
+# Clonar o actualizar el repositorio
+PROJECT_DIR=~/downloads/HormigasAIS-WikiBot
+if [ ! -d "$PROJECT_DIR" ]; then
+    git clone https://github.com/Thrumanshow/HormigasAIS-WikiBot.git "$PROJECT_DIR"
+else
+    cd "$PROJECT_DIR"
+    git pull
+fi
+
+cd "$PROJECT_DIR" || { echo "❌ No se pudo acceder al directorio $PROJECT_DIR"; exit 1; }
+
+# Instalar dependencias Node.js
+echo "📦 Instalando dependencias Node.js..."
 npm install @slack/web-api node-fetch dotenv
 
-# === 4. Crear estructura de directorios si no existe ===
-echo "📂 Creando estructura src/utils..."
-mkdir -p src/utils
+# Crear archivo de log si no existe
+LOG_FILE=src/utils/barrera_log.txt
+mkdir -p "$(dirname "$LOG_FILE")"
+touch "$LOG_FILE"
 
-# === 5. Crear archivo barrera.js con contenido actualizado ===
-cat > src/utils/barrera.js << 'EOF'
-/**
- * barrera.js
- * - Registra intentos de acción en un log local
- * - Envía notificaciones a Slack (Webhook o Bot Token)
- * - Compatible con NodeJS / Termux 16
- */
-
-const fs = require('fs');
-const path = require('path');
-const { WebClient } = require('@slack/web-api');
-const fetch = require('node-fetch'); 
-require('dotenv').config();
-
-// Rutas y variables
-const LOG_PATH = path.join(__dirname, 'barrera_log.txt');
-const SLACK_WEBHOOK = process.env.SLACK_WEBHOOK_URL || '';
-const SLACK_BOT_TOKEN = process.env.SLACK_BOT_TOKEN || '';
-const SLACK_CHANNEL = process.env.SLACK_CHANNEL || '#general';
-
-// Inicializar cliente Slack si hay BOT_TOKEN
-let slackClient = null;
-if (SLACK_BOT_TOKEN) {
-  slackClient = new WebClient(SLACK_BOT_TOKEN);
+# Función para ejecutar y reiniciar barrera.js automáticamente
+run_barrera() {
+    while true
+    do
+        echo "🚀 Iniciando barrera.js..."
+        node src/utils/barrera.js >> "$LOG_FILE" 2>&1
+        echo "⚠️ barrera.js se detuvo. Reiniciando en 3 segundos..."
+        sleep 3
+    done
 }
 
-/** Escribe log local */
-function writeLog(message) {
-  const entry = [
-    '=== BLOQUEO DE ACCIÓN ===',
-    message,
-    \`Timestamp: \${new Date().toISOString()}\`,
-    '=========================\\n'
-  ].join('\\n');
-  try {
-    fs.appendFileSync(LOG_PATH, entry);
-  } catch (e) {
-    console.error('Error escribiendo log:', e.message);
-  }
-}
+# Ejecutar en segundo plano con nohup
+nohup bash -c run_barrera >> "$LOG_FILE" 2>&1 &
 
-/** Envía notificación a Slack */
-async function notifySlack(text) {
-  const payload = { text };
-  try {
-    if (slackClient) {
-      await slackClient.chat.postMessage({ channel: SLACK_CHANNEL, text });
-      console.log('✅ Notificación enviada a Slack (Bot Token).');
-      return;
-    }
-    if (SLACK_WEBHOOK) {
-      const res = await fetch(SLACK_WEBHOOK, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload)
-      });
-      if (res.ok) {
-        console.log('✅ Notificación enviada a Slack (Webhook).');
-        return;
-      } else {
-        console.error('❌ Slack webhook respondió status', res.status);
-      }
-    }
-    console.warn('⚠️ No se configuró Slack (WEBHOOK ni BOT_TOKEN).');
-  } catch (err) {
-    console.error('❌ Error notificando a Slack:', err.message);
-  }
-}
+# Configurar auto-arranque en Termux
+termux-job-scheduler \
+  --script "$PROJECT_DIR/setup_wikibot.sh" \
+  --period-ms 60000 \
+  --persisted true
 
-/** Función pública para registrar intento */
-async function registrarIntento(mensaje) {
-  writeLog(mensaje);
-  console.log('\\n' + '=== BLOQUEO DE ACCIÓN ===\\n' + mensaje + '\\nTimestamp: ' + new Date().toISOString() + '\\n=========================\\n');
-  await notifySlack(\`🚨 Acción bloqueada: \${mensaje}\`);
-}
-
-/** Función principal de barrera */
-function barrera(make) {
-  if (make) {
-    registrarIntento('decromatiza');
-    return false;  // Acción bloqueada
-  }
-  return true;   // Acción permitida
-}
-
-module.exports = barrera;
-
-/** Ejemplo de prueba rápido */
-(async () => {
-  console.log("🚀 Simulando llamada a barrera...");
-  const allowed = await barrera(true);
-  console.log("Resultado:", allowed ? "Permitido" : "Bloqueado");
-})();
-EOF
-
-# === 6. Mensaje final ===
-echo "✅ Setup completo. Para probar ejecuta:"
-echo "   node src/utils/barrera.js"
+echo "✅ HormigasAIS-WikiBot ahora está supervisado y persistente."
+echo "📄 Logs disponibles en $LOG_FILE"
