@@ -2,7 +2,7 @@
 
 **Un bot de Discord enfocado en enlazar conocimiento colaborativo desde Wikipedia, con el estilo de la comunidad HormigasAIS.**
 
-[[![License](https://img.shields.io/badge/license-MIT-blue.svg)](http://LICENSE.md)]
+[![License](LICENSE.md)]
 [![Python Version](https://img.shields.io/badge/Python-3.8%2B-blue)](https://www.python.org/)
 [![Join Discord](https://img.shields.io/discord/1337650030282145794?label=HormigasAIS&logo=discord)](https://discord.gg/kGawzTDk)
 
