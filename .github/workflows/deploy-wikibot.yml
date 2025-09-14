@@ -1,0 +1,73 @@
+name: Deploy HormigasAIS-WikiBot
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build-and-run:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Clonar el repo principal
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # 2️⃣ Configurar Node.js (para barrera.js)
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Node.js dependencies
+        run: npm install
+
+      # 3️⃣ Configurar Python (para bot.py)
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      # 4️⃣ Registrar la ejecución del workflow localmente
+      - name: Log execution details
+        run: |
+          LOG_FILE="workflow_log_$(date +'%Y%m%d_%H%M%S').txt"
+          echo "User: $GITHUB_ACTOR" >> $LOG_FILE
+          echo "Date: $(date)" >> $LOG_FILE
+          echo "Workflow: Deploy HormigasAIS-WikiBot" >> $LOG_FILE
+          echo "-------------------------------" >> $LOG_FILE
+
+      # 5️⃣ Subir artifact temporal (opcional)
+      - name: Upload log artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: bot_execution_log
+          path: ${{ steps.log_execution.outputs.LOG_FILE }}
+
+      # 6️⃣ Push del log al repo privado HormigasAIS-Bot-Logs
+      - name: Push log to private repo
+        env:
+          BOT_LOGS_REPO: git@github.com:Thrumanshow/HormigasAIS-Bot-Logs.git
+          HORMIGAS_TOKEN: ${{ secrets.HORMIGAS_GITHUB_TOKEN }}
+        run: |
+          git config --global user.name "Thrumanshow"
+          git config --global user.email "chrisquionez@example.com"
+          git clone https://x-access-token:$HORMIGAS_TOKEN@github.com/Thrumanshow/HormigasAIS-Bot-Logs.git temp_logs_repo
+          cp $LOG_FILE temp_logs_repo/logs/
+          cd temp_logs_repo
+          git add logs/$LOG_FILE
+          git commit -m "Add workflow log $LOG_FILE"
+          git push origin main
+
+      # 7️⃣ Ejecutar ambos bots usando secrets
+      - name: Run HormigasAIS-WikiBot
+        env:
+          DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.HORMIGAS_GITHUB_TOKEN }}
+        run: |
+          echo "Launching Node.js bot..."
+          node barrera.js &
+          echo "Launching Python bot..."
+          python bot.py
